@@ -1,19 +1,36 @@
 <template>
   <v-app>
-    <v-toolbar app></v-toolbar>
+    <v-toolbar app>
+      <v-toolbar-title>Event Gateway</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items class="hidden-sm-and-down">
+        <v-btn flat to="/functions">Functions</v-btn>
+        <v-btn flat to="/subscriptions">Subscriptions</v-btn>
+      </v-toolbar-items>
+    </v-toolbar>
     <v-content>
       <v-container fluid>
         <router-view></router-view>
       </v-container>
     </v-content>
-    <v-footer app></v-footer>
   </v-app>
 </template>
 
 <script>
 export default {
-  name: 'App'
-}
+  name: 'App',
+  data() {
+    return {
+      drawer: true,
+      items: [
+        { title: 'Home', icon: 'dashboard' },
+        { title: 'About', icon: 'question_answer' }
+      ],
+      mini: true,
+      right: null
+    };
+  }
+};
 </script>
 
 <style>

@@ -10,7 +10,16 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      "/api/events": {
+        target: "http://localhost:4000",
+        pathRewrite: {"^/api/configuration" : ""}
+      },
+      "/api/config": {
+        target: "http://localhost:4001",
+        pathRewrite: {"^/api/config" : ""}
+      }
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
