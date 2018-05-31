@@ -13,7 +13,7 @@ module.exports = {
     proxyTable: {
       "/api/events": {
         target: "http://localhost:4000",
-        pathRewrite: {"^/api/configuration" : ""}
+        pathRewrite: {"^/api/events" : ""}
       },
       "/api/config": {
         target: "http://localhost:4001",
