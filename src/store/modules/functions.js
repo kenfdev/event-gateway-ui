@@ -8,19 +8,22 @@ const getters = {
   all: state => state.all
 }
 
+const SET_FUNCTIONS = 'SET_FUNCTIONS'
+const ADD_FUNCTION = 'ADD_FUNCTION'
+
 const actions = {
   getAll({commit}) {
     config
       .getFunctions()
       .then(res => {
-        commit('setFunctions', {functions: res.data.functions});
+        commit(SET_FUNCTIONS, {functions: res.data.functions});
       })
   },
   create({ commit }, payload) {
     config
       .createFunction(payload.namespace, payload.data)
       .then(res => {
-        commit('addFunction', {function: res.data})
+        commit(ADD_FUNCTION, {function: res.data})
       })
   }
 }

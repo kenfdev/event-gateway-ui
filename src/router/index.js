@@ -3,7 +3,9 @@ import Router from 'vue-router'
 import DashboardPage from '@/containers/DashboardPage'
 import FunctionsPage from '@/containers/FunctionsPage'
 import NewFunctionPage from '@/containers/NewFunctionPage'
+import EditFunctionPage from '@/containers/EditFunctionPage'
 import SubscriptionsPage from '@/containers/SubscriptionsPage'
+import NewSubscriptionPage from '@/containers/NewSubscriptionPage'
 
 Vue.use(Router)
 
@@ -20,6 +22,11 @@ export default new Router({
       component: FunctionsPage
     },
     {
+      path: '/functions/:id/edit',
+      name: 'EditFunctionsPage',
+      component: EditFunctionPage
+    },
+    {
       path: '/functions/new',
       name: 'NewFunctionPage',
       component: NewFunctionPage
@@ -28,6 +35,11 @@ export default new Router({
       path: '/subscriptions',
       name: 'SubscriptionsPage',
       component: SubscriptionsPage
+    },
+    {
+      path: '/subscriptions/new',
+      name: 'NewSubscriptionPage',
+      component: NewSubscriptionPage
     }
   ]
 })

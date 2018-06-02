@@ -14,15 +14,19 @@ const getters = {
   getForm: (state) => state.form
 }
 
+const SET_FUNCTION_ID = 'SET_FUNCTION_ID'
+const SET_TYPE = 'SET_TYPE'
+const SET_PROVIDER_URL = 'SET_PROVIDER_URL'
+
 const actions = {
   setFunctionId({ commit }, functionId) {
-    commit('setFunctionId', { functionId });
+    commit(SET_FUNCTION_ID, { functionId });
   },
   setType({ commit }, type) {
-    commit('setType', { type })
+    commit(SET_TYPE, { type })
   },
   setProviderUrl({ commit }, providerUrl) {
-    commit('setProviderUrl', { providerUrl })
+    commit(SET_PROVIDER_URL, { providerUrl })
   }
 }
 
