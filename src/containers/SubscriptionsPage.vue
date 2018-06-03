@@ -17,9 +17,8 @@
                          :to="'/subscriptions/' + subscription.subscriptionId">
               <v-list-tile-content>
                 <v-list-tile-title>
-                  {{ subscription.method }}
-                  {{ subscription.space }}/{{ subscription.functionId }}
-                  </v-list-tile-title>
+                  {{ subscription.method }} {{ subscription.space }}/{{ subscription.functionId }}
+                </v-list-tile-title>
               </v-list-tile-content>
 
             </v-list-tile>
@@ -48,13 +47,20 @@ export default {
   computed: mapGetters({
     paths: 'subscriptions/paths'
   }),
+  watch: {
+    // call again the method if the route changes
+    $route: () => {
+      this.getAllSubscriptions({ namespace: 'default' });
+    }
+  },
   methods: {
     ...mapActions({
       getAllSubscriptions: 'subscriptions/getAll'
     })
   },
   created() {
-    this.getAllSubscriptions();
+    // TODO: namespace
+    this.getAllSubscriptions({ namespace: 'default' });
   }
 };
 </script>

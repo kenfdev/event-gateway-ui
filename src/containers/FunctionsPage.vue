@@ -31,7 +31,7 @@
                     <v-list-tile :to="'/functions/' + func.functionId + '/edit'">
                       <v-list-tile-title>Edit</v-list-tile-title>
                     </v-list-tile>
-                    <v-list-tile>
+                    <v-list-tile @click="onDelete(func.functionId)">
                       <v-list-tile-title>Delete</v-list-tile-title>
                     </v-list-tile>
                   </v-list>
@@ -64,15 +64,28 @@ export default {
     functions: 'functions/all'
   }),
   methods: {
-    to(id) {
-      console.log('to', id);
-    },
     ...mapActions({
-      getAllFunctions: 'functions/getAll'
-    })
+      getAllFunctions: 'functions/getAll',
+      deleteFunction: 'functions/delete',
+      openConfirmDialog: 'layout/openConfirmDialog'
+    }),
+    onDelete(id) {
+      this.openConfirmDialog({
+        title: 'Confirm',
+        content: 'Are you sure you want to delete this function?',
+        onConfirmAction: () => {
+          // TODO: namespace
+          this.deleteFunction({
+            namespace: 'default',
+            id: id
+          });
+        }
+      });
+    }
   },
   created() {
-    this.getAllFunctions();
+    // TODO: namespace
+    this.getAllFunctions({ namespace: 'default' });
   }
 };
 </script>

@@ -12,7 +12,7 @@
             <v-icon>more_vert</v-icon>
           </v-btn>
           <v-list>
-            <v-list-tile>
+            <v-list-tile @click="onDelete">
               <v-list-tile-title>Delete</v-list-tile-title>
             </v-list-tile>
           </v-list>
@@ -140,7 +140,9 @@ export default {
       selectSubscription: 'subscriptions/select',
       getSubscription: 'subscriptions/get',
       invokeSubscription: 'subscriptionDetail/invoke',
-      setReqJson: 'subscriptionDetail/setReqJson'
+      setReqJson: 'subscriptionDetail/setReqJson',
+      deleteSubscription: 'subscriptions/delete',
+      openConfirmDialog: 'layout/openConfirmDialog'
     }),
     jsonChanged(value) {
       this.setReqJson(value);
@@ -150,6 +152,20 @@ export default {
         namespace: 'default',
         subscription: this.subscription,
         requestJson: this.requestJson
+      });
+    },
+    onDelete() {
+      const subscriptionId = this.subscription.subscriptionId;
+      this.openConfirmDialog({
+        title: 'Confirm',
+        content: 'Are you sure you want to delete this subscription?',
+        onConfirmAction: () => {
+          // TODO: namespace
+          this.deleteSubscription({
+            namespace: 'default',
+            id: subscriptionId
+          }).then(() => this.$router.push('/subscriptions'));
+        }
       });
     }
   },

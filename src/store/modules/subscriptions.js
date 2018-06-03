@@ -34,13 +34,19 @@ const getters = {
       .map(([key, value]) => ({key, value}));
     return paths;
   },
-  selectedSubscription: state => state.entities[state.selectedId]
+  selectedSubscription: state => {
+    if (!state.selectedId) {
+      return null;
+    }
+    return state.entities[state.selectedId]
+  }
 }
 
 const SELECT_SUBSCRIPTION = 'SELECT_SUBSCRIPTION';
 const SET_SUBSCRIPTION = 'SET_SUBSCRIPTION';
 const SET_SUBSCRIPTIONS = 'SET_SUBSCRIPTIONS';
 const ADD_SUBSCRIPTION = 'ADD_SUBSCRIPTION';
+const DELETE_SUBSCRIPTION = 'DELETE_SUBSCRIPTION';
 
 const actions = {
   get({
@@ -58,9 +64,11 @@ const actions = {
         commit(SET_SUBSCRIPTION, result);
       })
   },
-  getAll({commit}) {
+  getAll({
+    commit
+  }, payload) {
     config
-      .getSubscriptions()
+      .getSubscriptions(payload.namespace)
       .then(res => {
         const result = normalize(res.data.subscriptions, subscriptionListSchema);
         commit(SET_SUBSCRIPTIONS, result);
@@ -76,7 +84,18 @@ const actions = {
         commit(ADD_SUBSCRIPTION, result)
       })
   },
-  select({commit}, payload) {
+  delete({
+    commit
+  }, payload) {
+    config
+      .deleteSubscription(payload.namespace, payload.id)
+      .then(res => {
+        commit(DELETE_SUBSCRIPTION, {id: payload.id})
+      });
+  },
+  select({
+    commit
+  }, payload) {
     commit(SELECT_SUBSCRIPTION, payload);
   }
 }
@@ -101,6 +120,12 @@ const mutations = {
     ];
     Vue.set(state, 'allById', allById);
     Vue.set(state.entities, id, entities.subscriptions[id]);
+  },
+  [DELETE_SUBSCRIPTION](state, {id: deletedId}) {
+    const newSubscriptionsById = state
+      .allById
+      .filter(id => id !== deletedId);
+    Vue.set(state, 'allById', newSubscriptionsById);
   },
   [SELECT_SUBSCRIPTION](state, {id}) {
     Vue.set(state, 'selectedId', id);
