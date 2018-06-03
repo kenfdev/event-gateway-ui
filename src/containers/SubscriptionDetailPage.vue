@@ -1,7 +1,8 @@
 <template>
   <div>
-    <v-card>
-      <v-toolbar dense>
+    <v-card v-if="subscription">
+      <v-toolbar dense
+                 class="elevation-0">
         <v-toolbar-title>{{ subscription.method }} {{ subscription.path }}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-menu bottom
@@ -38,11 +39,20 @@
                           label="Event Type"
                           readonly></v-text-field>
           </v-flex>
-          <v-flex xs12
-                  sm6>
+          <v-flex xs10
+                  sm5>
             <v-text-field :value="subscription.functionId"
                           label="Function ID"
                           readonly></v-text-field>
+          </v-flex>
+          <v-flex class="pt-3 pr-5"
+                  xs2
+                  sm1>
+            <v-btn flat
+                   icon
+                   color="primary">
+              <v-icon dark>open_in_new</v-icon>
+            </v-btn>
           </v-flex>
           <v-flex xs12
                   sm6>
@@ -60,21 +70,69 @@
       </v-container>
 
     </v-card>
+    <v-card class="mt-4">
+      <v-card-title>
+        <div>
+          <span class="headline">Test</span><br>
+        </div>
+      </v-card-title>
+      <v-container grid-list-md>
+        <v-layout row
+                  wrap>
+          <v-flex offset-xs1
+                  xs10>
+            <v-json-editor v-model="json"
+                           @input="jsonChanged">
+            </v-json-editor>
+          </v-flex>
+          <v-flex xs1></v-flex>
+          <v-flex offset-xs9>
+            <v-btn color="info">Invoke</v-btn>
+          </v-flex>
+          <v-flex offset-xs1
+                  xs10>
+            <v-card class="elevation-0 black white--text">
+              <v-card-title>
+                <div>
+                  <span class="headline">Result</span><br>
+                </div>
+              </v-card-title>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-card>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import VJsonEditor from '../components/VJsonEditor';
 
 export default {
-  computed: mapGetters({
-    subscription: 'subscriptions/selectedSubscription'
-  }),
+  components: {
+    VJsonEditor
+  },
+  computed: {
+    ...mapGetters({
+      subscription: 'subscriptions/selectedSubscription'
+    })
+  },
+  data() {
+    return {
+      json: {
+        success: true
+      }
+    };
+  },
   methods: {
     ...mapActions({
       selectSubscription: 'subscriptions/select',
       getSubscription: 'subscriptions/get'
-    })
+    }),
+    jsonChanged(value) {
+      console.log(JSON.stringify(value));
+    }
   },
   created() {
     // e.g. user.echo,test,/test
