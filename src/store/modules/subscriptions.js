@@ -1,42 +1,69 @@
+import Vue from 'vue';
+import {normalize} from 'normalizr';
+import {subscriptionSchema, subscriptionListSchema} from '../schema';
 import config from '../../api/config';
 
 const state = {
-  all: []
+  allById: [],
+  entities: {},
+  selectedId: null
 }
 
 const getters = {
-  all: state => state.all,
+  all: state => state
+    .allById
+    .map(id => state.entities[id]),
   paths: state => {
     let dict = {};
-    state
-      .all
-      .forEach(s => {
-        if (s.path in dict) {
-          dict[s.path] = [
-            ...dict[s.path],
-            s
-          ];
-        } else {
-          dict[s.path] = [s];
-        }
-      })
+    const all = state
+      .allById
+      .map(id => state.entities[id]);
+    all.forEach(s => {
+      if (s.path in dict) {
+        dict[s.path] = [
+          ...dict[s.path],
+          s
+        ];
+      } else {
+        dict[s.path] = [s];
+      }
+    })
 
     const paths = Object
       .entries(dict)
       .map(([key, value]) => ({key, value}));
     return paths;
-  }
+  },
+  selectedSubscription: state => state.entities[state.selectedId]
 }
 
-const SET_SUBSCRIPTIONS = 'SET_SUBSCRIPTIONS'
-const ADD_SUBSCRIPTION = 'ADD_SUBSCRIPTION'
+const SELECT_SUBSCRIPTION = 'SELECT_SUBSCRIPTION';
+const SET_SUBSCRIPTION = 'SET_SUBSCRIPTION';
+const SET_SUBSCRIPTIONS = 'SET_SUBSCRIPTIONS';
+const ADD_SUBSCRIPTION = 'ADD_SUBSCRIPTION';
 
 const actions = {
+  get({
+    commit
+  }, payload) {
+    if (payload.id in state.entities) {
+      // check if it's cached
+      return;
+    }
+
+    config
+      .getSubscription(payload.namespace, payload.id)
+      .then(res => {
+        const result = normalize(res.data, subscriptionSchema);
+        commit(SET_SUBSCRIPTION, result);
+      })
+  },
   getAll({commit}) {
     config
       .getSubscriptions()
       .then(res => {
-        commit(SET_SUBSCRIPTIONS, {subscriptions: res.data.subscriptions});
+        const result = normalize(res.data.subscriptions, subscriptionListSchema);
+        commit(SET_SUBSCRIPTIONS, result);
       })
   },
   create({
@@ -45,19 +72,38 @@ const actions = {
     config
       .createSubscription(payload.namespace, payload.data)
       .then(res => {
-        commit(ADD_SUBSCRIPTION, {subscription: res.data})
+        const result = normalize(res.data, subscriptionSchema);
+        commit(ADD_SUBSCRIPTION, result)
       })
+  },
+  select({commit}, payload) {
+    commit(SELECT_SUBSCRIPTION, payload);
   }
 }
 
 const mutations = {
-  [SET_SUBSCRIPTIONS](state, {subscriptions}) {
-    state.all = subscriptions;
-  },
-  [ADD_SUBSCRIPTION](state, {subscription}) {
-    state.all = [
-      subscription, ...state.all
+  [SET_SUBSCRIPTION](state, {result, entities}) {
+    const id = result;
+    const allById = [
+      id, ...state.allById
     ];
+    Vue.set(state, 'allById', allById);
+    Vue.set(state.entities, id, entities.subscriptions[id]);
+  },
+  [SET_SUBSCRIPTIONS](state, {result, entities}) {
+    Vue.set(state, 'allById', result);
+    Vue.set(state, 'entities', entities.subscriptions);
+  },
+  [ADD_SUBSCRIPTION](state, {result, entities}) {
+    const id = result;
+    const allById = [
+      id, ...state.allById
+    ];
+    Vue.set(state, 'allById', allById);
+    Vue.set(state.entities, id, entities.subscriptions[id]);
+  },
+  [SELECT_SUBSCRIPTION](state, {id}) {
+    Vue.set(state, 'selectedId', id);
   }
 }
 

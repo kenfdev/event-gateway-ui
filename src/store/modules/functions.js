@@ -1,11 +1,17 @@
+import Vue from 'vue';
+import {fnSchema, fnListSchema} from '../schema';
+import {normalize} from 'normalizr';
 import config from '../../api/config';
 
 const state = {
-  all: []
+  allById: [],
+  entities: {}
 }
 
 const getters = {
-  all: state => state.all
+  all: state => state
+    .allById
+    .map(id => state.entities[id])
 }
 
 const SET_FUNCTIONS = 'SET_FUNCTIONS'
@@ -16,26 +22,34 @@ const actions = {
     config
       .getFunctions()
       .then(res => {
-        commit(SET_FUNCTIONS, {functions: res.data.functions});
+        const result = normalize(res.data.functions, fnListSchema);
+        commit(SET_FUNCTIONS, result);
       })
   },
-  create({ commit }, payload) {
+  create({
+    commit
+  }, payload) {
     config
       .createFunction(payload.namespace, payload.data)
       .then(res => {
-        commit(ADD_FUNCTION, {function: res.data})
+        const result = normalize(res.data, fnSchema);
+        commit(ADD_FUNCTION, result);
       })
   }
 }
 
 const mutations = {
-  setFunctions(state, { functions }) {
-    state.all = functions;
+  [SET_FUNCTIONS](state, {result, entities}) {
+    Vue.set(state, 'allById', result);
+    Vue.set(state, 'entities', entities.functions);
   },
-  addFunction(state, { func }) {
-    state.all = [
-      func, ...state.all
-    ];
+  [ADD_FUNCTION](state, {result, entities}) {
+    const entity = result[0]
+    const allById = [
+      entity, ...state.allById
+    ]
+    Vue.set(state, 'allById', allById);
+    Vue.set(state.entities, entity.id, entity);
   }
 }
 
