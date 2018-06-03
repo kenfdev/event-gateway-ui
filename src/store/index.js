@@ -4,6 +4,7 @@ import functions from './modules/functions'
 import functionForm from './modules/function-form'
 import subscriptions from './modules/subscriptions'
 import subscriptionForm from './modules/subscription-form'
+import subscriptionDetail from './modules/subscription-detail';
 import createLogger from 'vuex/dist/logger'
 
 Vue.use(Vuex)
@@ -15,7 +16,8 @@ export default new Vuex.Store({
     functions,
     functionForm,
     subscriptions,
-    subscriptionForm
+    subscriptionForm,
+    subscriptionDetail
   },
   strict: debug,
   plugins: debug

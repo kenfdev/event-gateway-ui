@@ -81,23 +81,38 @@
                   wrap>
           <v-flex offset-xs1
                   xs10>
-            <v-json-editor v-model="json"
-                           @input="jsonChanged">
+            <v-card class="elevation-0">
+              <v-card-title>
+                <div>
+                  <span class="headline">Request</span><br>
+                </div>
+              </v-card-title>
+            </v-card>
+          </v-flex>
+          <v-flex offset-xs1
+                  xs10>
+            <v-json-editor @input="jsonChanged">
             </v-json-editor>
           </v-flex>
           <v-flex xs1></v-flex>
           <v-flex offset-xs9>
-            <v-btn color="info">Invoke</v-btn>
+            <v-btn color="info"
+                   @click="invoke">Invoke</v-btn>
           </v-flex>
           <v-flex offset-xs1
                   xs10>
-            <v-card class="elevation-0 black white--text">
+            <v-card class="elevation-0">
               <v-card-title>
                 <div>
-                  <span class="headline">Result</span><br>
+                  <span class="headline">Response</span><br>
                 </div>
               </v-card-title>
             </v-card>
+          </v-flex>
+          <v-flex offset-xs1
+                  xs10>
+            <v-json-editor :value="response">
+            </v-json-editor>
           </v-flex>
         </v-layout>
       </v-container>
@@ -115,23 +130,27 @@ export default {
   },
   computed: {
     ...mapGetters({
-      subscription: 'subscriptions/selectedSubscription'
+      subscription: 'subscriptions/selectedSubscription',
+      requestJson: 'subscriptionDetail/getRequestJson',
+      response: 'subscriptionDetail/getResponse'
     })
-  },
-  data() {
-    return {
-      json: {
-        success: true
-      }
-    };
   },
   methods: {
     ...mapActions({
       selectSubscription: 'subscriptions/select',
-      getSubscription: 'subscriptions/get'
+      getSubscription: 'subscriptions/get',
+      invokeSubscription: 'subscriptionDetail/invoke',
+      setReqJson: 'subscriptionDetail/setReqJson'
     }),
     jsonChanged(value) {
-      console.log(JSON.stringify(value));
+      this.setReqJson(value);
+    },
+    invoke() {
+      this.invokeSubscription({
+        namespace: 'default',
+        subscription: this.subscription,
+        requestJson: this.requestJson
+      });
     }
   },
   created() {

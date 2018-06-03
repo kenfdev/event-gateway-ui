@@ -1,6 +1,6 @@
 <template>
-  <v-app>
-    <v-toolbar app>
+  <v-app dark>
+    <v-toolbar app style="z-index: 10">
       <v-toolbar-title>Event Gateway</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">

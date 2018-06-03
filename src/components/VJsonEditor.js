@@ -2,7 +2,7 @@
 import JSONEditor from 'jsoneditor/dist/jsoneditor';
 import 'jsoneditor/dist/jsoneditor.min.css';
 
-const modes = ['code'];
+const modes = ['code', 'view'];
 
 export default {
   name: 'v-jsoneditor',
@@ -23,24 +23,24 @@ export default {
     return {jsoneditor: null};
   },
   watch: {
-    value(value) {
+    value(newValue, oldValue) {
       this
         .jsoneditor
-        .set(value);
+        .set(newValue);
     }
   },
   methods: {
     getOptions() {
       const defaults = {
         escapeUnicode: false,
-        history: true,
+        // history: true,
         indentation: 2,
         mode: modes[0],
-        modes: modes.slice(0),
-        navigationBar: true,
-        search: true,
-        statusBar: true,
-        sortObjectKeys: false
+        modes: modes.slice(0)
+        // navigationBar: true,
+        // search: true,
+        // statusBar: true,
+        // sortObjectKeys: false
       };
 
       return Object.assign({}, defaults, this.options, {

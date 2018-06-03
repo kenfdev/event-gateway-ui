@@ -31,13 +31,13 @@ const actions = {
 }
 
 const mutations = {
-  setFunctionId(state, { functionId }) {
+  [SET_FUNCTION_ID](state, { functionId }) {
     state.form.functionId = functionId;
   },
-  setType(state, { type }) {
+  [SET_TYPE](state, { type }) {
     state.form.type = type;
   },
-  setProviderUrl(state, { providerUrl }) {
+  [SET_PROVIDER_URL](state, { providerUrl }) {
     state.form.provider.url = providerUrl;
   }
 }
