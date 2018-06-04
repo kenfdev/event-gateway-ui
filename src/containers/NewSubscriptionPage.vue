@@ -1,20 +1,24 @@
 <template>
-  <v-form ref="form"
-          lazy-validation>
-    <v-select v-model="type"
-              :items="['sync', 'async']"
-              label="Type"
-              required></v-select>
-    <v-text-field v-model="eventType"
-                  label="Event Type"
-                  required></v-text-field>
-    <v-text-field v-model="functionId"
-                  label="Function ID"
-                  required></v-text-field>
-    <v-text-field v-model="path"
-                  label="Path"></v-text-field>
-    <v-text-field v-model="method"
-                  label="Method"></v-text-field>
+  <v-form ref="form" lazy-validation>
+    <v-container grid-list-md>
+      <v-layout row wrap>
+        <v-flex xs12 sm6>
+          <v-select v-model="type" :items="subscriptionTypes" label="Type" required></v-select>
+        </v-flex>
+        <v-flex xs12 sm6>
+          <v-text-field v-model="eventType" label="Event Type" required></v-text-field>
+        </v-flex>
+        <v-flex xs12 sm6>
+          <v-select v-model="functionId" :items="functionIds" label="Function Id" required></v-select>
+        </v-flex>
+        <v-flex xs12 sm6>
+          <v-text-field v-model="path" label="Path"></v-text-field>
+        </v-flex>
+        <v-flex xs12 sm6>
+          <v-select v-model="method" :items="httpMethods" label="Method"></v-select>
+        </v-flex>
+      </v-layout>
+    </v-container>
     <v-btn @click="submit">
       submit
     </v-btn>
@@ -67,8 +71,39 @@ export default {
       }
     },
     ...mapGetters({
+      functionIds: 'functions/allNames',
       form: 'subscriptionForm/getForm'
     })
+  },
+  data() {
+    return {
+      subscriptionTypes: ['sync', 'async'],
+      httpMethods: [
+        'GET',
+        'HEAD',
+        'POST',
+        'PUT',
+        'DELETE',
+        'CONNECT',
+        'OPTIONS',
+        'TRACE',
+        'PATCH'
+      ]
+    };
+  },
+  watch: {
+    $router: () => {
+      this.clearForm().then(() => {
+        // TODO: namespace
+        this.getAllFunctions({ namespace: 'default' });
+      });
+    }
+  },
+  created() {
+    this.clearForm().then(() => {
+      // TODO: namespace
+      this.getAllFunctions({ namespace: 'default' });
+    });
   },
   methods: {
     submit() {
@@ -83,7 +118,9 @@ export default {
       setFunctionId: 'subscriptionForm/setFunctionId',
       setPath: 'subscriptionForm/setPath',
       setMethod: 'subscriptionForm/setMethod',
-      create: 'subscriptions/create'
+      create: 'subscriptions/create',
+      getAllFunctions: 'functions/getAll',
+      clearForm: 'subscriptionForm/clearForm'
     })
   }
 };

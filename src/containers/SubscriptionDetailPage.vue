@@ -1,14 +1,11 @@
 <template>
   <div>
     <v-card v-if="subscription">
-      <v-toolbar dense
-                 class="elevation-0">
+      <v-toolbar dense class="elevation-0">
         <v-toolbar-title>{{ subscription.method }} {{ subscription.path }}</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-menu bottom
-                left>
-          <v-btn slot="activator"
-                 icon>
+        <v-menu bottom left>
+          <v-btn slot="activator" icon>
             <v-icon>more_vert</v-icon>
           </v-btn>
           <v-list>
@@ -19,52 +16,29 @@
         </v-menu>
       </v-toolbar>
       <v-container grid-list-md>
-        <v-layout row
-                  wrap>
-          <v-flex xs12
-                  sm6>
-            <v-text-field :value="subscription.space"
-                          label="Space"
-                          readonly></v-text-field>
+        <v-layout row wrap>
+          <v-flex xs12 sm6>
+            <v-text-field :value="subscription.space" label="Space" readonly></v-text-field>
           </v-flex>
-          <v-flex xs12
-                  sm6>
-            <v-text-field :value="subscription.subscriptionId"
-                          label="Subscription ID"
-                          readonly></v-text-field>
+          <v-flex xs12 sm6>
+            <v-text-field :value="subscription.subscriptionId" label="Subscription ID" readonly></v-text-field>
           </v-flex>
-          <v-flex xs12
-                  sm6>
-            <v-text-field :value="subscription.event"
-                          label="Event Type"
-                          readonly></v-text-field>
+          <v-flex xs12 sm6>
+            <v-text-field :value="subscription.event" label="Event Type" readonly></v-text-field>
           </v-flex>
-          <v-flex xs10
-                  sm5>
-            <v-text-field :value="subscription.functionId"
-                          label="Function ID"
-                          readonly></v-text-field>
+          <v-flex xs10 sm5>
+            <v-text-field :value="subscription.functionId" label="Function ID" readonly></v-text-field>
           </v-flex>
-          <v-flex class="pt-3 pr-5"
-                  xs2
-                  sm1>
-            <v-btn flat
-                   icon
-                   color="primary">
+          <v-flex class="pt-3 pr-5" xs2 sm1>
+            <v-btn flat icon color="primary">
               <v-icon dark>open_in_new</v-icon>
             </v-btn>
           </v-flex>
-          <v-flex xs12
-                  sm6>
-            <v-text-field :value="subscription.method"
-                          label="Method"
-                          readonly></v-text-field>
+          <v-flex xs12 sm6>
+            <v-text-field :value="subscription.method" label="Method" readonly></v-text-field>
           </v-flex>
-          <v-flex xs12
-                  sm6>
-            <v-text-field :value="subscription.path"
-                          label="Path"
-                          readonly></v-text-field>
+          <v-flex xs12 sm6>
+            <v-text-field :value="subscription.path" label="Path" readonly></v-text-field>
           </v-flex>
         </v-layout>
       </v-container>
@@ -77,10 +51,8 @@
         </div>
       </v-card-title>
       <v-container grid-list-md>
-        <v-layout row
-                  wrap>
-          <v-flex offset-xs1
-                  xs10>
+        <v-layout row wrap>
+          <v-flex offset-xs1 xs10>
             <v-card class="elevation-0">
               <v-card-title>
                 <div>
@@ -89,18 +61,15 @@
               </v-card-title>
             </v-card>
           </v-flex>
-          <v-flex offset-xs1
-                  xs10>
+          <v-flex offset-xs1 xs10>
             <v-json-editor @input="jsonChanged">
             </v-json-editor>
           </v-flex>
           <v-flex xs1></v-flex>
           <v-flex offset-xs9>
-            <v-btn color="info"
-                   @click="invoke">Invoke</v-btn>
+            <v-btn color="info" @click="invoke">Invoke</v-btn>
           </v-flex>
-          <v-flex offset-xs1
-                  xs10>
+          <v-flex offset-xs1 xs10>
             <v-card class="elevation-0">
               <v-card-title>
                 <div>
@@ -109,8 +78,7 @@
               </v-card-title>
             </v-card>
           </v-flex>
-          <v-flex offset-xs1
-                  xs10>
+          <v-flex offset-xs1 xs10>
             <v-json-editor :value="response">
             </v-json-editor>
           </v-flex>

@@ -1,16 +1,8 @@
 <template>
-  <v-form ref="form"
-          lazy-validation>
-    <v-text-field v-model="functionId"
-                  label="Function ID"
-                  required></v-text-field>
-    <v-select v-model="type"
-              :items="['http']"
-              label="Type"
-              required></v-select>
-    <v-text-field v-model="providerUrl"
-                  label="Provider URL"
-                  required></v-text-field>
+  <v-form ref="form" lazy-validation>
+    <v-text-field v-model="functionId" label="Function ID" required></v-text-field>
+    <v-select v-model="type" :items="['http']" label="Type" required></v-select>
+    <v-text-field v-model="providerUrl" label="Provider URL" required></v-text-field>
 
     <v-btn @click="submit">
       submit
@@ -52,6 +44,12 @@ export default {
       form: 'functionForm/getForm'
     })
   },
+  watch: {
+    $router: 'clearForm'
+  },
+  created() {
+    this.clearForm();
+  },
   methods: {
     submit() {
       this.create({
@@ -63,7 +61,8 @@ export default {
       setFunctionId: 'functionForm/setFunctionId',
       setType: 'functionForm/setType',
       setProviderUrl: 'functionForm/setProviderUrl',
-      create: 'functions/create'
+      create: 'functions/create',
+      clearForm: 'functionForm/clearForm'
     })
   }
 };
