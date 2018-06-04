@@ -48,10 +48,10 @@ const mutations = {
     Vue.set(state, 'entities', fns);
   },
   [ADD_FUNCTION](state, { result, entities }) {
-    const entity = result[0];
-    const allById = [entity, ...state.allById];
+    const id = result;
+    const allById = [id, ...state.allById];
     Vue.set(state, 'allById', allById);
-    Vue.set(state.entities, entity.id, entity);
+    Vue.set(state.entities, id, entities.functions[id]);
   },
   [DELETE_FUNCTION](state, { id: deletedId }) {
     const newAllById = state.allById.filter(id => id !== deletedId);

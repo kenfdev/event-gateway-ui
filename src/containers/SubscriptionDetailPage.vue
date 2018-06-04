@@ -24,7 +24,10 @@
             <v-text-field :value="subscription.subscriptionId" label="Subscription ID" readonly></v-text-field>
           </v-flex>
           <v-flex xs12 sm6>
-            <v-text-field :value="subscription.event" label="Event Type" readonly></v-text-field>
+            <v-text-field :value="subscription.type" label="Type" readonly></v-text-field>
+          </v-flex>
+          <v-flex xs12 sm6>
+            <v-text-field :value="subscription.eventType" label="Event Type" readonly></v-text-field>
           </v-flex>
           <v-flex xs10 sm5>
             <v-text-field :value="subscription.functionId" label="Function ID" readonly></v-text-field>
@@ -33,6 +36,8 @@
             <v-btn flat icon color="primary">
               <v-icon dark>open_in_new</v-icon>
             </v-btn>
+          </v-flex>
+          <v-flex xs12 sm6>
           </v-flex>
           <v-flex xs12 sm6>
             <v-text-field :value="subscription.method" label="Method" readonly></v-text-field>
@@ -138,14 +143,10 @@ export default {
     }
   },
   created() {
-    // e.g. user.echo,test,/test
-    // FIXME: unfortunately, the vue-router decodes the params which results to a request failure
     const id = this.$route.params.id;
-    const cols = id.split(',');
-    const fixedId = `${cols[0]},${cols[1]},${encodeURIComponent(cols[2])}`;
-    this.selectSubscription({ id: fixedId });
+    this.selectSubscription({ id });
     // TODO: namespace
-    this.getSubscription({ namespace: 'default', id: fixedId });
+    this.getSubscription({ namespace: 'default', id });
   }
 };
 </script>

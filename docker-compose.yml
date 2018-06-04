@@ -2,7 +2,8 @@ version: "3"
 
 services:
   event_gateway:
-    image: serverless/event-gateway
+    # image: serverless/event-gateway
+    image: kenfdev/event-gateway
     ports:
     -  "4000:4000"
     -  "4001:4001"

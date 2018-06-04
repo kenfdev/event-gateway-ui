@@ -17,15 +17,11 @@ export default {
     return axios.get(`/api/config/v1/spaces/${namespace}/subscriptions`);
   },
   createSubscription(namespace, data) {
-    return axios.post(`/api/config/v1/spaces/${namespace}/subscriptions`, {
-      type: data.type,
-      event: data.eventType,
-      functionId: data.functionId,
-      path: data.path,
-      method: data.method
-    });
+    return axios.post(`/api/config/v1/spaces/${namespace}/subscriptions`, data);
   },
   deleteSubscription(namespace, id) {
-    return axios.delete(`/api/config/v1/spaces/${namespace}/subscriptions/${id}`);
+    return axios.delete(
+      `/api/config/v1/spaces/${namespace}/subscriptions/${id}`
+    );
   }
-}
+};
