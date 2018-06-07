@@ -2,7 +2,7 @@
   <div>
     <v-flex xs6
             offset-xs3>
-      <v-card>
+      <v-card v-if="paths && paths.length > 0">
         <v-list>
           <v-list-group v-for="(path, index) in paths"
                         :key="index"

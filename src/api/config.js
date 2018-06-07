@@ -10,6 +10,15 @@ export default {
   deleteFunction(namespace, id) {
     return axios.delete(`/api/config/v1/spaces/${namespace}/functions/${id}`);
   },
+  getEventTypes(namespace) {
+    return axios.get(`/api/config/v1/spaces/${namespace}/eventtypes`);
+  },
+  createEventType(namespace, data) {
+    return axios.post(`/api/config/v1/spaces/${namespace}/eventtypes`, data);
+  },
+  deleteEventType(namespace, id) {
+    return axios.delete(`/api/config/v1/spaces/${namespace}/eventtypes/${id}`);
+  },
   getSubscription(namespace, id) {
     return axios.get(`/api/config/v1/spaces/${namespace}/subscriptions/${id}`);
   },

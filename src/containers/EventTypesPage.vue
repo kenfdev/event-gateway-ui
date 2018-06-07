@@ -1,13 +1,13 @@
 <template>
   <div>
     <v-flex xs6 offset-xs3>
-      <v-card v-if="functions && functions.length > 0">
+      <v-card v-if="eventTypes && eventTypes.length > 0">
         <v-list two-line subheader>
-          <template v-for="(func) in functions">
-            <v-list-tile :key="func.title">
+          <template v-for="(eventType) in eventTypes">
+            <v-list-tile :key="eventType.name">
               <v-list-tile-content>
-                <v-list-tile-title v-text="func.space + '/' + func.functionId"></v-list-tile-title>
-                <v-list-tile-sub-title v-text="'type: ' + func.type"></v-list-tile-sub-title>
+                <v-list-tile-title v-text="eventType.space + '/' + eventType.name"></v-list-tile-title>
+                <v-list-tile-sub-title v-if="eventType.authorizerId" v-text="'Authorizer ID: ' + eventType.authorizerId"></v-list-tile-sub-title>
               </v-list-tile-content>
               <v-list-tile-action>
                 <v-menu bottom left>
@@ -15,10 +15,10 @@
                     <v-icon>more_vert</v-icon>
                   </v-btn>
                   <v-list>
-                    <v-list-tile :to="'/functions/' + func.functionId + '/edit'">
+                    <v-list-tile :to="'/eventtypes/' + eventType.name + '/edit'">
                       <v-list-tile-title>Edit</v-list-tile-title>
                     </v-list-tile>
-                    <v-list-tile @click="onDelete(func.functionId)">
+                    <v-list-tile @click="onDelete(eventType.name)">
                       <v-list-tile-title>Delete</v-list-tile-title>
                     </v-list-tile>
                   </v-list>
@@ -29,7 +29,7 @@
         </v-list>
       </v-card>
       <v-fab-transition>
-        <v-btn color="pink" dark fab fixed bottom right to="/functions/new">
+        <v-btn color="pink" dark fab fixed bottom right to="/eventtypes/new">
           <v-icon>add</v-icon>
         </v-btn>
       </v-fab-transition>
@@ -42,21 +42,21 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default {
   computed: mapGetters({
-    functions: 'functions/all'
+    eventTypes: 'eventTypes/all'
   }),
   methods: {
     ...mapActions({
-      getAllFunctions: 'functions/getAll',
-      deleteFunction: 'functions/delete',
+      getAllEventTypes: 'eventTypes/getAll',
+      deleteEventType: 'eventTypes/delete',
       openConfirmDialog: 'layout/openConfirmDialog'
     }),
     onDelete(id) {
       this.openConfirmDialog({
         title: 'Confirm',
-        content: 'Are you sure you want to delete this function?',
+        content: 'Are you sure you want to delete this eventType?',
         onConfirmAction: () => {
           // TODO: namespace
-          this.deleteFunction({
+          this.deleteEventType({
             namespace: 'default',
             id: id
           });
@@ -66,7 +66,7 @@ export default {
   },
   created() {
     // TODO: namespace
-    this.getAllFunctions({ namespace: 'default' });
+    this.getAllEventTypes({ namespace: 'default' });
   }
 };
 </script>

@@ -3,6 +3,8 @@ import Vuex from 'vuex'
 import layout from './modules/layout';
 import functions from './modules/functions';
 import functionForm from './modules/function-form';
+import eventTypes from './modules/eventtypes';
+import eventTypeForm from './modules/eventtype-form';
 import subscriptions from './modules/subscriptions';
 import subscriptionForm from './modules/subscription-form';
 import subscriptionDetail from './modules/subscription-detail';
@@ -17,6 +19,8 @@ export default new Vuex.Store({
     layout,
     functions,
     functionForm,
+    eventTypes,
+    eventTypeForm,
     subscriptions,
     subscriptionForm,
     subscriptionDetail

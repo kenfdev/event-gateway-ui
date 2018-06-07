@@ -6,7 +6,7 @@
           <v-select v-model="type" :items="subscriptionTypes" label="Type" required></v-select>
         </v-flex>
         <v-flex xs12 sm6>
-          <v-text-field v-model="eventType" label="Event Type" required></v-text-field>
+          <v-select v-model="eventType" :items="eventTypes" label="Event Type" required></v-select>
         </v-flex>
         <v-flex xs12 sm6>
           <v-select v-model="functionId" :items="functionIds" label="Function Id" required></v-select>
@@ -72,6 +72,7 @@ export default {
     },
     ...mapGetters({
       functionIds: 'functions/allNames',
+      eventTypes: 'eventTypes/allNames',
       form: 'subscriptionForm/getForm'
     })
   },
@@ -96,6 +97,7 @@ export default {
       this.clearForm().then(() => {
         // TODO: namespace
         this.getAllFunctions({ namespace: 'default' });
+        this.getAllEventsTypes({ namespace: 'default' });
       });
     }
   },
@@ -103,6 +105,7 @@ export default {
     this.clearForm().then(() => {
       // TODO: namespace
       this.getAllFunctions({ namespace: 'default' });
+      this.getAllEventsTypes({ namespace: 'default' });
     });
   },
   methods: {
@@ -120,6 +123,7 @@ export default {
       setMethod: 'subscriptionForm/setMethod',
       create: 'subscriptions/create',
       getAllFunctions: 'functions/getAll',
+      getAllEventsTypes: 'eventTypes/getAll',
       clearForm: 'subscriptionForm/clearForm'
     })
   }

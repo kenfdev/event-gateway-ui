@@ -72,7 +72,7 @@
           </v-flex>
           <v-flex xs1></v-flex>
           <v-flex offset-xs9>
-            <v-btn color="info" @click="invoke">Invoke</v-btn>
+            <v-btn color="pink" @click="invoke">Invoke</v-btn>
           </v-flex>
           <v-flex offset-xs1 xs10>
             <v-card class="elevation-0">
