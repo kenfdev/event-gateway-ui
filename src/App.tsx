@@ -1,20 +1,33 @@
 import * as React from 'react';
-import './App.css';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
-import logo from './logo.svg';
+import NavBar from './components/NavBar/NavBar';
+import DashboardPage from './containers/DashboardPage';
+import FunctionsPage from './containers/FunctionsPage';
+import EventTypesPage from './containers/EventTypesPage';
+import SubscriptionsPage from './containers/SubscriptionsPage';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+
+const theme = createMuiTheme({
+  palette: {
+    type: 'dark'
+  }
+});
 
 class App extends React.Component {
   public render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.tsx</code> and save to reload.
-        </p>
-      </div>
+      <MuiThemeProvider theme={theme}>
+        <Router>
+          <div>
+            <NavBar />
+            <Route path="/" exact component={DashboardPage} />
+            <Route path="/functions" exact component={FunctionsPage} />
+            <Route path="/eventtypes" exact component={EventTypesPage} />
+            <Route path="/subscriptions" exact component={SubscriptionsPage} />
+          </div>
+        </Router>
+      </MuiThemeProvider>
     );
   }
 }
