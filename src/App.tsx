@@ -6,7 +6,7 @@ import DashboardPage from './containers/DashboardPage';
 import FunctionsPage from './containers/FunctionsPage';
 import EventTypesPage from './containers/EventTypesPage';
 import SubscriptionsPage from './containers/SubscriptionsPage';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 const theme = createMuiTheme({
   palette: {
@@ -21,10 +21,16 @@ class App extends React.Component {
         <Router>
           <div>
             <NavBar />
-            <Route path="/" exact component={DashboardPage} />
-            <Route path="/functions" exact component={FunctionsPage} />
-            <Route path="/eventtypes" exact component={EventTypesPage} />
-            <Route path="/subscriptions" exact component={SubscriptionsPage} />
+            <Switch>
+              <Route path="/" exact component={DashboardPage} />
+              <Route path="/functions" exact component={FunctionsPage} />
+              <Route path="/eventtypes" exact component={EventTypesPage} />
+              <Route
+                path="/subscriptions"
+                exact
+                component={SubscriptionsPage}
+              />
+            </Switch>
           </div>
         </Router>
       </MuiThemeProvider>

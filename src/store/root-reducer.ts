@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 
-// import { countersReducer } from '../features/counters';
+import { functionsReducer } from '../features/functions';
 
 const rootReducer = combineReducers({
-  // counters: countersReducer,
+  functions: functionsReducer,
 });
 
 export default rootReducer;
