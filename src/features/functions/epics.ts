@@ -1,16 +1,24 @@
 import Types from 'Types';
 import { fetchFunctions } from './actions';
 import { combineEpics, Epic } from 'redux-observable';
-import { ignoreElements, filter } from 'rxjs/operators';
-import { isOfType } from 'typesafe-actions';
+import { filter, switchMap, map, catchError } from 'rxjs/operators';
+import { isActionOf } from 'typesafe-actions';
+import { from, pipe, of } from 'rxjs';
 
 export const fetchFunctionsFlow: Epic<
   Types.RootAction,
-  null,
+  Types.RootAction,
   Types.RootState,
   Types.Services
 > = (action$, store, { functions }) =>
   action$.pipe(
-    filter(isOfType(fetchFunctions.request)),
-    ignoreElements()
+    filter(isActionOf(fetchFunctions.request)),
+    switchMap(action =>
+      from(functions.fetch()).pipe(
+        map(fetchFunctions.success),
+        catchError(
+          pipe( fetchFunctions.failure, of)))
+    )
   );
+
+export default combineEpics(fetchFunctionsFlow);
