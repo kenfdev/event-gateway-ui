@@ -1,4 +1,4 @@
-import { createAsyncAction } from 'typesafe-actions';
+import { createAsyncAction, createAction } from 'typesafe-actions';
 import { ViewableEGFunction } from './models';
 
 export const fetchFunctions = createAsyncAction(
@@ -12,3 +12,7 @@ export const createFunction = createAsyncAction(
   'CREATE_FUNCTION_SUCCESS',
   'CREATE_FUNCTION_FAILURE'
 )<ViewableEGFunction, ViewableEGFunction, Error>();
+
+export const selectFunction = createAction('SELECT_FUNCTION', resolve => {
+  return (functionId: string) => resolve(functionId);
+});

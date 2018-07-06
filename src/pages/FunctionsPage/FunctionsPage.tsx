@@ -8,6 +8,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import { functionsActions } from '../../features/functions';
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core';
+import FunctionList from '../../components/FunctionList/FunctionList';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -39,6 +40,7 @@ class FunctionsPage extends React.Component<FunctionsPageProps> {
     return (
       <div className="App">
         <p className="App-intro">Functions</p>
+        <FunctionList />
         <Button
           variant="fab"
           className={classes.addButton}

@@ -11,6 +11,7 @@
     "interface-over-type-literal": false,
     "no-console": false,
     "one-variable-per-declaration": false,
+    "no-empty": false,
     "jsx-boolean-value": false,
     "jsx-no-lambda": false
   }
