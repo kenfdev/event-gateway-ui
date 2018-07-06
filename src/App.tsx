@@ -2,10 +2,11 @@ import * as React from 'react';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import NavBar from './components/NavBar/NavBar';
-import DashboardPage from './containers/DashboardPage';
-import FunctionsPage from './containers/FunctionsPage';
-import EventTypesPage from './containers/EventTypesPage';
-import SubscriptionsPage from './containers/SubscriptionsPage';
+import DashboardPage from './pages/DashboardPage';
+import FunctionsPage from './pages/FunctionsPage';
+import FunctionsNewPage from './pages/FunctionsNewPage';
+import EventTypesPage from './pages/EventTypesPage';
+import SubscriptionsPage from './pages/SubscriptionsPage';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 const theme = createMuiTheme({
@@ -24,6 +25,7 @@ class App extends React.Component {
             <Switch>
               <Route path="/" exact component={DashboardPage} />
               <Route path="/functions" exact component={FunctionsPage} />
+              <Route path="/functions/new" exact component={FunctionsNewPage} />
               <Route path="/eventtypes" exact component={EventTypesPage} />
               <Route
                 path="/subscriptions"

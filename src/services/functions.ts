@@ -1,10 +1,15 @@
+import axios from 'axios';
+
 export interface IFunctionsService {
   fetch(): Promise<any>;
 }
 
 export class FunctionsService implements IFunctionsService {
-  fetch(): Promise<any> {
-    throw new Error('Method not implemented.');
+  fetch(namespace = 'default'): Promise<any> {
+    return axios.get(`/api/config/v1/spaces/${namespace}/functions`).then(v => {
+      console.log(v);
+      return v.data;
+    });
   }
 }
 

@@ -1,6 +1,4 @@
 import { combineEpics } from 'redux-observable';
 
-// import todos from '../features/todos/epics';
-
-// export default combineEpics(todos);
-export default combineEpics();
+import functions from '../features/functions/epics';
+export default combineEpics(functions);

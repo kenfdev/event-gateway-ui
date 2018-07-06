@@ -3,7 +3,7 @@ import { fetchFunctions } from './actions';
 import { combineEpics, Epic } from 'redux-observable';
 import { filter, switchMap, map, catchError } from 'rxjs/operators';
 import { isActionOf } from 'typesafe-actions';
-import { from, pipe, of } from 'rxjs';
+import { from, of } from 'rxjs';
 
 export const fetchFunctionsFlow: Epic<
   Types.RootAction,
@@ -16,8 +16,8 @@ export const fetchFunctionsFlow: Epic<
     switchMap(action =>
       from(functions.fetch()).pipe(
         map(fetchFunctions.success),
-        catchError(
-          pipe( fetchFunctions.failure, of)))
+        catchError(err => of(fetchFunctions.failure(err)))
+      )
     )
   );
 

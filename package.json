@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^1.3.1",
     "@material-ui/icons": "^1.1.0",
+    "axios": "^0.18.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-redux": "^5.0.7",
@@ -28,5 +29,19 @@
     "@types/react-redux": "^6.0.3",
     "@types/react-router-dom": "^4.2.7",
     "typescript": "^2.9.2"
+  },
+  "proxy": {
+    "/api/events": {
+      "target": "http://localhost:4000",
+      "pathRewrite": {
+        "^/api/events": ""
+      }
+    },
+    "/api/config": {
+      "target": "http://localhost:4001",
+      "pathRewrite": {
+        "^/api/config": ""
+      }
+    }
   }
 }
