@@ -24,8 +24,14 @@ export default combineReducers<FunctionsState, FunctionsAction>({
   selectedFunctionIds: (state = [], action) => {
     switch (action.type) {
       case getType(functions.selectFunction):
-        // FIXME: not implemented
-        return [action.payload];
+        let selected = [];
+        const index = state.indexOf(action.payload);
+        if (index < 0) {
+          selected = [...state, action.payload];
+        } else {
+          selected = [...state.slice(0, index), ...state.slice(index + 1)];
+        }
+        return selected;
       default:
         return state;
     }

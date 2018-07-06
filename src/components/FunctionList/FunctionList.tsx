@@ -7,13 +7,16 @@ import {
   WithStyles,
   createStyles
 } from '@material-ui/core/styles';
+
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
-import CommentIcon from '@material-ui/icons/Comment';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { ViewableEGFunction } from '../../features/functions/models';
 
 import { functionsActions, functionsSelectors } from '../../features/functions';
@@ -33,38 +36,79 @@ interface Props extends WithStyles<typeof styles> {
   onSelectFunction(functionId: string): any;
 }
 
-const FunctionList: React.SFC<Props> = props => {
-  const { classes, functions, onSelectFunction } = props;
+interface State {
+  anchorEl: HTMLElement | undefined;
+}
 
-  const handleToggle = (f: ViewableEGFunction) => (e: any) => {
-    onSelectFunction(f.functionId);
+class FunctionList extends React.Component<Props, State> {
+  readonly state: State = {
+    anchorEl: undefined
   };
 
-  return (
-    <div className={classes.root}>
-      <List>
-        {functions.map(f => (
-          <ListItem
-            key={f.functionId}
-            role={undefined}
-            dense
-            button
-            onClick={handleToggle(f)}
-            className={classes.listItem}
-          >
-            <Checkbox checked={f.selected} tabIndex={-1} disableRipple />
-            <ListItemText primary={`${f.space}/${f.functionId}`} />
-            <ListItemSecondaryAction>
-              <IconButton aria-label="Comments">
-                <CommentIcon />
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
-        ))}
-      </List>
-    </div>
-  );
-};
+  handleToggle = (f: ViewableEGFunction) => (e: any) => {
+    this.props.onSelectFunction(f.functionId);
+  };
+
+  handleOpen = (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+    this.setState({ anchorEl: e.currentTarget });
+  };
+
+  handleClose = () => {
+    this.setState({ anchorEl: undefined });
+  };
+
+  render() {
+    const options = ['Delete'];
+    const { classes, functions } = this.props;
+    const { anchorEl } = this.state;
+    return (
+      <div className={classes.root}>
+        <List>
+          {functions.map(f => (
+            <ListItem
+              key={f.functionId}
+              role={undefined}
+              dense
+              button
+              className={classes.listItem}
+            >
+              <Checkbox
+                checked={f.selected}
+                tabIndex={-1}
+                disableRipple
+                onClick={this.handleToggle(f)}
+              />
+              <ListItemText primary={`${f.space}/${f.functionId}`} />
+              <ListItemSecondaryAction>
+                <IconButton onClick={this.handleOpen}>
+                  <MoreVertIcon />
+                </IconButton>
+              </ListItemSecondaryAction>
+              <Menu
+                id="long-menu"
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={this.handleClose}
+                PaperProps={{
+                  style: {
+                    width: 200
+                  }
+                }}
+              >
+                {options.map(option => (
+                  <MenuItem key={option} onClick={this.handleClose}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </Menu>
+            </ListItem>
+          ))}
+        </List>
+      </div>
+    );
+  }
+}
 
 const mapStateToProps = (state: Types.RootState) => ({
   functions: functionsSelectors.getViewableFunctions(state.functions)
@@ -72,9 +116,7 @@ const mapStateToProps = (state: Types.RootState) => ({
 
 const FunctionListConnected = connect(
   mapStateToProps,
-  {
-    onSelectFunction: functionsActions.selectFunction
-  }
+  { onSelectFunction: functionsActions.selectFunction }
 )(FunctionList);
 
 export default withStyles(styles)(FunctionListConnected);
