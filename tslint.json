@@ -7,9 +7,11 @@
     "ordered-imports": false,
     "object-literal-sort-keys": false,
     "interface-name": false,
-    "jsx-boolean-value": false,
     "member-access": false,
     "interface-over-type-literal": false,
-    "no-console": false
+    "no-console": false,
+    "one-variable-per-declaration": false,
+    "jsx-boolean-value": false,
+    "jsx-no-lambda": false
   }
 }

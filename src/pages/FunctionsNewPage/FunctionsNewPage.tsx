@@ -1,9 +1,11 @@
 import Types from 'Types';
 import * as React from 'react';
 import { connect } from 'react-redux';
-
 import { functionsActions } from '../../features/functions';
+import FunctionForm from '../../components/FunctionForm';
+
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core';
+import { ViewableEGFunction } from '../../features/functions/models';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -15,21 +17,19 @@ const styles = (theme: Theme) =>
   });
 
 export interface FunctionsNewPageProps extends WithStyles<typeof styles> {
-  onFetchFunctions: () => any;
+  onCreateFunction: (data: ViewableEGFunction) => any;
 }
 
 class FunctionsNewPage extends React.Component<FunctionsNewPageProps> {
-  componentDidMount() {
-    this.handleFetchFunctions();
-  }
-  handleFetchFunctions = () => {
-    this.props.onFetchFunctions();
+  handleSubmit = (data: ViewableEGFunction) => {
+    this.props.onCreateFunction(data);
   };
 
   render() {
     return (
       <div className="App">
         <p className="App-intro">New Functions</p>
+        <FunctionForm onSubmit={this.handleSubmit} />
       </div>
     );
   }
@@ -40,8 +40,10 @@ const mapStateToProps = (state: Types.RootState) => ({});
 const FunctionsNewPageConnected = connect(
   mapStateToProps,
   {
-    onFetchFunctions: functionsActions.fetchFunctions.request
+    onCreateFunction: functionsActions.createFunction.request
   }
 )(FunctionsNewPage);
 
-export default withStyles(styles, { withTheme: true })(FunctionsNewPageConnected);
+export default withStyles(styles, { withTheme: true })(
+  FunctionsNewPageConnected
+);

@@ -11,7 +11,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 const theme = createMuiTheme({
   palette: {
-    type: 'dark'
+    type: 'light'
   }
 });
 

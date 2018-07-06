@@ -1,15 +1,22 @@
 import axios from 'axios';
 
 export interface IFunctionsService {
-  fetch(): Promise<any>;
+  fetch(data?: { space: string }): Promise<EGFunction[]>;
+  create(data: EGFunction): Promise<EGFunction>;
 }
 
 export class FunctionsService implements IFunctionsService {
-  fetch(namespace = 'default'): Promise<any> {
-    return axios.get(`/api/config/v1/spaces/${namespace}/functions`).then(v => {
-      console.log(v);
+  fetch(data: { space?: string } = {}): Promise<EGFunction[]> {
+    const space = data.space || 'default';
+    return axios.get(`/api/config/v1/spaces/${space}/functions`).then(v => {
       return v.data;
     });
+  }
+  create(data: EGFunction): Promise<EGFunction> {
+    const space = data.space || 'default';
+    return axios
+      .post(`/api/config/v1/spaces/${space}/functions`, data)
+      .then(v => v.data);
   }
 }
 
