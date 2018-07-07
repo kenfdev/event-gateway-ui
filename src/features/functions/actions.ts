@@ -13,6 +13,20 @@ export const createFunction = createAsyncAction(
   'CREATE_FUNCTION_FAILURE'
 )<ViewableEGFunction, ViewableEGFunction, Error>();
 
+export type DeleteRequest = {
+  functionId: string;
+  space?: string;
+};
+export type DeleteResponse = {
+  functionId: string;
+  space?: string;
+};
+export const deleteFunction = createAsyncAction(
+  'DELETE_FUNCTION_REQUEST',
+  'DELETE_FUNCTION_SUCCESS',
+  'DELETE_FUNCTION_FAILURE'
+)<DeleteRequest, DeleteResponse, Error>();
+
 export const selectFunction = createAction('SELECT_FUNCTION', resolve => {
   return (functionId: string) => resolve(functionId);
 });

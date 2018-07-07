@@ -17,6 +17,12 @@ export default combineReducers<FunctionsState, FunctionsAction>({
         return action.payload;
       case getType(functions.createFunction.success):
         return [action.payload, ...state];
+      case getType(functions.deleteFunction.success):
+        const { functionId, space } = action.payload;
+        const deleted = state.filter(
+          v => !(v.functionId === functionId && v.space === space)
+        );
+        return deleted;
       default:
         return state;
     }

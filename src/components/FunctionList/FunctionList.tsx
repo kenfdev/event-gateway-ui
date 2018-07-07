@@ -20,6 +20,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { ViewableEGFunction } from '../../features/functions/models';
 
 import { functionsActions, functionsSelectors } from '../../features/functions';
+import { DeleteRequest } from '../../features/functions/actions';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -34,6 +35,7 @@ const styles = (theme: Theme) =>
 interface Props extends WithStyles<typeof styles> {
   functions: ViewableEGFunction[];
   onSelectFunction(functionId: string): any;
+  onDeleteFunction(data: DeleteRequest): any;
 }
 
 interface State {
@@ -52,6 +54,14 @@ class FunctionList extends React.Component<Props, State> {
   handleOpen = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
     this.setState({ anchorEl: e.currentTarget });
+  };
+
+  handleDelete = (f: ViewableEGFunction) => () => {
+    this.props.onDeleteFunction({
+      functionId: f.functionId,
+      space: f.space
+    });
+    this.handleClose();
   };
 
   handleClose = () => {
@@ -97,7 +107,7 @@ class FunctionList extends React.Component<Props, State> {
                 }}
               >
                 {options.map(option => (
-                  <MenuItem key={option} onClick={this.handleClose}>
+                  <MenuItem key={option} onClick={this.handleDelete(f)}>
                     {option}
                   </MenuItem>
                 ))}
@@ -116,7 +126,10 @@ const mapStateToProps = (state: Types.RootState) => ({
 
 const FunctionListConnected = connect(
   mapStateToProps,
-  { onSelectFunction: functionsActions.selectFunction }
+  {
+    onSelectFunction: functionsActions.selectFunction,
+    onDeleteFunction: functionsActions.deleteFunction.request
+  }
 )(FunctionList);
 
 export default withStyles(styles)(FunctionListConnected);
