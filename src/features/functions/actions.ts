@@ -1,17 +1,18 @@
 import { createAsyncAction, createAction } from 'typesafe-actions';
 import { ViewableEGFunction } from './models';
+import { EGFunction } from '../../models/function'
 
 export const fetchFunctions = createAsyncAction(
   'FETCH_FUNCTIONS_REQUEST',
   'FETCH_FUNCTIONS_SUCCESS',
   'FETCH_FUNCTIONS_FAILURE'
-)<{ space: string }, ViewableEGFunction[], Error>();
+)<{ space: string }, EGFunction[], Error>();
 
 export const createFunction = createAsyncAction(
   'CREATE_FUNCTION_REQUEST',
   'CREATE_FUNCTION_SUCCESS',
   'CREATE_FUNCTION_FAILURE'
-)<ViewableEGFunction, ViewableEGFunction, Error>();
+)<ViewableEGFunction, EGFunction, Error>();
 
 export type DeleteRequest = {
   functionId: string;
@@ -30,3 +31,4 @@ export const deleteFunction = createAsyncAction(
 export const selectFunction = createAction('SELECT_FUNCTION', resolve => {
   return (functionId: string) => resolve(functionId);
 });
+

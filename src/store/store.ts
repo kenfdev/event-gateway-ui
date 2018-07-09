@@ -6,6 +6,8 @@ import { composeEnhancers } from './utils';
 import rootReducer from './root-reducer';
 import rootEpic from './root-epic';
 import services from '../services';
+import { createBrowserHistory } from 'history';
+import { connectRouter, routerMiddleware } from 'connected-react-router';
 
 export const epicMiddleware = createEpicMiddleware<
   Types.RootAction,
@@ -16,14 +18,20 @@ export const epicMiddleware = createEpicMiddleware<
   dependencies: services
 });
 
+export const history = createBrowserHistory();
+
 function configureStore(initialState?: object) {
   // configure middlewares
-  const middlewares = [epicMiddleware];
+  const middlewares = [epicMiddleware, routerMiddleware(history)];
   // compose enhancers
   const enhancer = composeEnhancers(applyMiddleware(...middlewares));
 
   // create store
-  return createStore(rootReducer, initialState!, enhancer);
+  return createStore(
+    connectRouter(history)(rootReducer),
+    initialState!,
+    enhancer
+  );
 }
 
 // pass an optional param to rehydrate state on app start

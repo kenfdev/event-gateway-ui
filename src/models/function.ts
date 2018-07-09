@@ -1,15 +1,15 @@
-interface EGFunction {
+export interface EGFunction {
   functionId: string;
   space: string;
   type: string;
   provider: HTTPProvider | AWSLambdaProvider;
 }
 
-interface HTTPProvider {
+export interface HTTPProvider {
   url: string;
 }
 
-interface AWSLambdaProvider {
+export interface AWSLambdaProvider {
   arn: string;
   region: string;
   awsAccessKeyId?: string;

@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import { ActionType, getType } from 'typesafe-actions';
 import * as functions from './actions';
-import { ViewableEGFunction } from './models';
+import { EGFunction } from '../../models/function';
 
 export type FunctionsState = {
-  readonly functions: ViewableEGFunction[];
+  readonly functions: EGFunction[];
   readonly selectedFunctionIds: string[];
 };
 

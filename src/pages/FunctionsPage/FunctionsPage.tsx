@@ -1,57 +1,59 @@
 import Types from 'Types';
 import * as React from 'react';
-import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
-import Grid from '@material-ui/core/Grid'
+import Grid from '@material-ui/core/Grid';
 
-import {functionsActions} from '../../features/functions';
-import {createStyles, Theme, withStyles, WithStyles} from '@material-ui/core';
+import { functionsActions } from '../../features/functions';
+import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core';
 import FunctionList from '../../components/FunctionList/FunctionList';
 
-const styles = (theme : Theme) => createStyles({
-  root: {
-    flexGrow: 1
-  },
-  addButton: {
-    position: 'absolute',
-    bottom: theme.spacing.unit * 2,
-    right: theme.spacing.unit * 2
-  }
-});
+const styles = (theme: Theme) =>
+  createStyles({
+    root: {
+      flexGrow: 1
+    },
+    addButton: {
+      position: 'absolute',
+      bottom: theme.spacing.unit * 2,
+      right: theme.spacing.unit * 2
+    }
+  });
 
-export interface FunctionsPageProps extends WithStyles < typeof styles > {
+export interface FunctionsPageProps extends WithStyles<typeof styles> {
   onFetchFunctions: () => any;
 }
 
-class FunctionsPage extends React.Component < FunctionsPageProps > {
+class FunctionsPage extends React.Component<FunctionsPageProps> {
   componentDidMount() {
     this.handleFetchFunctions();
   }
   handleFetchFunctions = () => {
-    this
-      .props
-      .onFetchFunctions();
+    this.props.onFetchFunctions();
   };
 
   render() {
-    const {classes} = this.props;
+    const { classes } = this.props;
 
-    const NewFunctionLink = (props : any) => (<Link to="/functions/new" {...props}/>);
+    const NewFunctionLink = (props: any) => (
+      <Link to="/functions/new" {...props} />
+    );
     return (
       <Grid container className={classes.root} justify={'center'}>
         <Grid item xs={6}>
           <div className="App">
             <p className="App-intro">Functions</p>
-            <FunctionList/>
+            <FunctionList />
             <Button
               variant="fab"
               className={classes.addButton}
               color="primary"
-              component={NewFunctionLink}>
-              <AddIcon/>
+              component={NewFunctionLink}
+            >
+              <AddIcon />
             </Button>
           </div>
         </Grid>
@@ -60,8 +62,13 @@ class FunctionsPage extends React.Component < FunctionsPageProps > {
   }
 }
 
-const mapStateToProps = (state : Types.RootState) => ({});
+const mapStateToProps = (state: Types.RootState) => ({});
 
-const FunctionsPageConnected = connect(mapStateToProps, {onFetchFunctions: functionsActions.fetchFunctions.request})(FunctionsPage);
+const FunctionsPageConnected = connect(
+  mapStateToProps,
+  {
+    onFetchFunctions: functionsActions.fetchFunctions.request
+  }
+)(FunctionsPage);
 
-export default withStyles(styles, {withTheme: true})(FunctionsPageConnected);
+export default withStyles(styles, { withTheme: true })(FunctionsPageConnected);

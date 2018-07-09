@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import { EGFunction } from '../models/function';
+
 export interface IFunctionsService {
   fetch(data?: { space: string }): Promise<EGFunction[]>;
   create(data: EGFunction): Promise<EGFunction>;

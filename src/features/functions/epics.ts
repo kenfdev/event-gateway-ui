@@ -1,9 +1,10 @@
 import Types from 'Types';
 import { fetchFunctions, createFunction, deleteFunction } from './actions';
 import { combineEpics, Epic } from 'redux-observable';
-import { filter, switchMap, map, catchError } from 'rxjs/operators';
+import { filter, switchMap, map, catchError, flatMap } from 'rxjs/operators';
 import { isActionOf } from 'typesafe-actions';
-import { from, of } from 'rxjs';
+import { from, of, concat } from 'rxjs';
+import { routerActions } from 'connected-react-router';
 
 const fetchFunctionsFlow: Epic<
   Types.RootAction,
@@ -31,7 +32,12 @@ const createFunctionFlow: Epic<
     filter(isActionOf(createFunction.request)),
     switchMap(action =>
       from(functions.create(action.payload)).pipe(
-        map(createFunction.success),
+        flatMap(v => {
+          return concat(
+            of(createFunction.success(v)),
+            of(routerActions.push('/functions'))
+          );
+        }),
         catchError(err => of(createFunction.failure(err)))
       )
     )
