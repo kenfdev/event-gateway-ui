@@ -1,7 +1,17 @@
 import Types from 'Types';
 import { fetchFunctions, createFunction, deleteFunction } from './actions';
+import { layoutActions } from '../layout';
 import { combineEpics, Epic } from 'redux-observable';
-import { filter, switchMap, map, catchError, flatMap } from 'rxjs/operators';
+import {
+  filter,
+  switchMap,
+  map,
+  catchError,
+  flatMap,
+  take,
+  startWith,
+  takeUntil
+} from 'rxjs/operators';
 import { isActionOf } from 'typesafe-actions';
 import { from, of, concat } from 'rxjs';
 import { routerActions } from 'connected-react-router';
@@ -48,23 +58,44 @@ const deleteFunctionFlow: Epic<
   Types.RootAction,
   Types.RootState,
   Types.Services
-> = (action$, store, { functions }) =>
+> = (action$, store, { functions, uuid }) =>
   action$.pipe(
     filter(isActionOf(deleteFunction.request)),
-    switchMap(action =>
-      from(
-        functions.delete(action.payload).then(v => {
-          const { functionId, space = 'default' } = action.payload;
-          return {
-            functionId,
-            space
-          };
-        })
-      ).pipe(
-        map(deleteFunction.success),
-        catchError(err => of(deleteFunction.failure(err)))
-      )
-    )
+    switchMap(reqAction => {
+      const modalId = uuid.v4();
+      return action$.pipe(
+        filter(isActionOf(layoutActions.confirmAction)),
+        filter(({ payload }) => payload.id === modalId),
+        take(1),
+        switchMap(a =>
+          from(
+            functions.delete(reqAction.payload).then(v => {
+              const { functionId, space = 'default' } = reqAction.payload;
+              return {
+                functionId,
+                space
+              };
+            })
+          ).pipe(
+            flatMap(v => {
+              return concat(
+                of(deleteFunction.success(v)),
+                of(layoutActions.closeModal({ id: modalId }))
+              );
+            }),
+            catchError(err => of(deleteFunction.failure(err)))
+          )
+        ),
+        takeUntil(action$.pipe(filter(isActionOf(layoutActions.closeModal)))),
+        startWith(
+          layoutActions.openConfirmModal({
+            id: modalId,
+            text: 'Are you Sure?',
+            type: 'confirmation'
+          })
+        )
+      );
+    })
   );
 
 export default combineEpics(

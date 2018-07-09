@@ -2,6 +2,7 @@ import * as React from 'react';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import NavBar from './components/NavBar/NavBar';
+import Modals from './components/Modals';
 import DashboardPage from './pages/DashboardPage';
 import FunctionsPage from './pages/FunctionsPage';
 import FunctionsNewPage from './pages/FunctionsNewPage';
@@ -28,6 +29,7 @@ class App extends React.Component {
             <Route path="/eventtypes" exact component={EventTypesPage} />
             <Route path="/subscriptions" exact component={SubscriptionsPage} />
           </Switch>
+          <Modals />
         </div>
       </MuiThemeProvider>
     );
